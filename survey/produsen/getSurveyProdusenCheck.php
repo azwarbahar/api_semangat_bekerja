@@ -7,9 +7,9 @@ $tanggal = $_GET["tanggal"];
 $kunjungan_id = $_GET["kunjungan_id"];
 $outlet_id = $_GET["outlet_id"];
 
-$query = "SELECT * FROM tb_survey_produsen WHERE tanggal = '$tanggal' AND
-                                        kunjungan_id = '$kunjungan_id' AND
-                                        outlet_id = '$outlet_id'";
+$query = "SELECT * FROM tb_survey_produsen WHERE kunjungan_id = '$kunjungan_id' AND
+                                        outlet_id = '$outlet_id' AND
+                                        tanggal BETWEEN NOW() - INTERVAL 30 DAY AND NOW() ";
 
 // $query = "SELECT * FROM tb_survey_harga";
 
