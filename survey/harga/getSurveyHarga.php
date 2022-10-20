@@ -4,11 +4,10 @@ header('Content-type: application/json');
 error_reporting(E_ERROR | E_PARSE);
 
 $tanggal = $_GET["tanggal"];
-$kunjungan_id = $_GET["kunjungan_id"];
+// $kunjungan_id = $_GET["kunjungan_id"];
 $outlet_id = $_GET["outlet_id"];
 
-$query = "SELECT * FROM tb_survey_harga WHERE kunjungan_id = '$kunjungan_id' AND
-                                            outlet_id = '$outlet_id' AND
+$query = "SELECT * FROM tb_survey_harga WHERE outlet_id = '$outlet_id' AND
                                             tanggal BETWEEN NOW() - INTERVAL 30 DAY AND NOW() ";
 
 $result = mysqli_query($conn, $query);
