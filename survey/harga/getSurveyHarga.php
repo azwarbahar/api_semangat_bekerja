@@ -12,9 +12,9 @@ $query = "SELECT * FROM tb_survey_harga WHERE outlet_id = '$outlet_id' AND
 
 $result = mysqli_query($conn, $query);
 
-$array = array();
+// $array = array();
 while ($row = mysqli_fetch_assoc($result)) {
-    $array[] = $row;
+    $array = $row;
 }
 
 echo ($result) ?
