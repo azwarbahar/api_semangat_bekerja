@@ -11,53 +11,34 @@ $tanggal = $_POST['tanggal'];
 $kendala = $_POST['kendala'];
 $foto = $_POST['foto'];
 
-if ($foto == null) {
-    // $finalPath = "../upload/dokumentasi/img_default.png";
-    $result["kode"] = "2";
-    $result["pesan"] = "Foto tidak terkirim!";
-    echo json_encode($result);
-    mysqli_close($conn);
-} else {
+// SET FOTO
+$foto = $_FILES['foto']['name'];
+$ext = pathinfo($foto, PATHINFO_EXTENSION);
+$nama_foto = "image_" . time() . "." . $ext;
+$file_tmp = $_FILES['foto']['tmp_name'];
 
-    $query = "INSERT INTO tb_kendala values(null, '$outlet_id',
+
+$query = "INSERT INTO tb_kendala values(null, '$outlet_id',
                                         '$sales_id',
                                         '$kunjungan_id',
                                         '$jam',
                                         '$tanggal',
                                         '$kendala',
-                                        '-',
+                                        '$nama_foto',
                                         null,
                                         null)";
 
-    if (mysqli_query($conn, $query)) {
-        $id = mysqli_insert_id($conn);
-        $path = "../upload/kunjungan/image_" . time() . ".png";
-        $finalPath = "image_" . time() . ".png";
+if (mysqli_query($conn, $query)) {
+    move_uploaded_file($file_tmp, '../upload/kunjungan/' . $nama_foto);
 
-        $insert_picture = "UPDATE tb_kendala SET bukti_foto='$finalPath' WHERE id='$id' ";
+    $result["kode"] = "1";
+    $result["pesan"] = "Success!";
 
-        if (mysqli_query($conn, $insert_picture)) {
-
-            if (file_put_contents($path, base64_decode($foto))) {
-
-                $result["kode"] = "1";
-                $result["pesan"] = "Success!";
-
-                echo json_encode($result);
-                mysqli_close($conn);
-            } else {
-
-                $response["kode"] = "0";
-                $response["pesan"] = "Error! " . mysqli_error($conn);
-                echo json_encode($response);
-
-                mysqli_close($conn);
-            }
-        }
-    } else {
-        $response["kode"] = "0";
-        $response["pesan"] = "Error! " . mysqli_error($conn);
-        echo json_encode($response);
-        mysqli_close($conn);
-    }
+    echo json_encode($result);
+    mysqli_close($conn);
+} else {
+    $response["kode"] = "0";
+    $response["pesan"] = "Error! " . mysqli_error($conn);
+    echo json_encode($response);
+    mysqli_close($conn);
 }
